@@ -1,9 +1,10 @@
 from flaskqna import app, bcrypt, db
 from flaskqna.forms import RegisterForm, LoginForm, QuestionForm
 from flaskqna.models import User, Question, Comment
-from flask import Flask, render_template, url_for, redirect, flash, request
+from flask import Flask, render_template, url_for, redirect, flash, request,abort
 from flask_login import login_user, logout_user, current_user
 
+# MAIN HOME ROUTE
 
 @app.route('/home')
 @app.route('/')
@@ -12,6 +13,7 @@ def home():
     comments = Comment.query.all()
     return render_template('home.html', title='Question & Answers', questions=questions, comments=comments)
 
+# QUESTION ROUTES --------------------------------------------------------------------------------------------------
 
 @app.route('/ask', methods=['GET', 'POST'])
 def ask():
@@ -23,7 +25,29 @@ def ask():
         flash('Question posted', 'success')
         return redirect(url_for('home'))
     return render_template('ask.html', title='Ask Question', form=form)
+    
 
+@app.route('/question/<int:id>', methods=['GET'])
+def question_page(id):
+    question = Question.query.get_or_404(id)
+    user = User.query.filter_by(username=current_user.username)
+    return render_template('question_page.html', question=question, user=user)
+
+
+@app.route('/question/delete/<int:id>', methods=['GET', 'POST'])
+def delete_question(id):
+    q = question = Question.query.get_or_404(id)
+    if question.user_id == current_user.id:
+        db.session.delete(q)
+        db.session.commit()
+        return redirect(url_for('home'))
+    else:
+        abort(403)
+    return render_template('question_page.html', q=q)
+
+# -------------------------------------------------------------------------------------------------------------------
+
+# USER LOGIN ROUTES -------------------------------------------------------------------------------------------------
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -67,13 +91,9 @@ def logout():
     flash('Logged out', 'success')
     return redirect(url_for('home'))
 
+# -------------------------------------------------------------------------------------------------------------------
 
-@app.route('/question/<int:id>', methods=['GET'])
-def question_page(id):
-    question = Question.query.get_or_404(id)
-    user = User.query.filter_by(username=current_user.username)
-    return render_template('question_page.html', question=question, user=user)
-
+# COMMENTS ----------------------------------------------------------------------------------------------------------
 
 @app.route('/post/comment', methods=['POST'])
 def post_comment():
@@ -91,3 +111,5 @@ def post_comment():
 def view_comment():
     comments = Comment.query.all()
     return render_template('home.html', comments=comments)
+
+# -------------------------------------------------------------------------------------------------------------------
