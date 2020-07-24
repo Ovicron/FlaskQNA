@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <h1 class="display-5 text-center">Ask A Question</h1>
+    <form method='POST' action=''>
+        {{ form.hidden_tag() }}
+        <fieldset class='form-group'>
+            <div class='form-group'>
+                {{ form.question.label(class='form-control-label') }}
+                {% if form.question.errors %}
+                {{ form.question(class='form-control form-control-lg is-invalid') }}
+                <div class='invalid-feedback'>
+                    {% for error in form.question.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.question(class='form-control form-control-lg') }}
+                {% endif %}
+            </div>
+            <div class='form-group'>
+                {{ form.context.label(class='form-control-label') }}
+                {% if form.context.errors %}
+                {{ form.context(class='form-control form-control-lg is-invalid') }}
+                <div class='invalid-feedback'>
+                    {% for error in form.context.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.context(class='form-control form-control-lg') }}
+                {% endif %}
+            </div>
+
+        </fieldset>
+        <div class='form-group'>
+            {{ form.submit(class='btn btn-outline-info') }}
+        </div>
+    </form>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="display-5 text-center">Create an account</h1>
+    <form method='POST' action=''>
+        {{ form.hidden_tag() }}
+        <fieldset class='form-group'>
+            <div class='form-group'>
+                {{ form.email.label(class='form-control-label') }}
+                {% if form.email.errors %}
+                {{ form.email(class='form-control form-control-lg is-invalid') }}
+                <div class='invalid-feedback'>
+                    {% for error in form.email.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.email(class='form-control form-control-lg') }}
+                {% endif %}
+            </div>
+            <div class='form-group'>
+                {{ form.username.label(class='form-control-label') }}
+                {% if form.username.errors %}
+                {{ form.username(class='form-control form-control-lg is-invalid') }}
+                <div class='invalid-feedback'>
+                    {% for error in form.username.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.username(class='form-control form-control-lg') }}
+                {% endif %}
+            </div>
+            <div class='form-group'>
+                {{ form.password.label(class='form-control-label') }}
+                {% if form.password.errors %}
+                {{ form.password(class='form-control form-control-lg is-invalid') }}
+                <div class='invalid-feedback'>
+                    {% for error in form.password.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.password(class='form-control form-control-lg') }}
+                {% endif %}
+            </div>
+
+            <small class='text-muted'>
+                Already have an account? <a class='ml-1 text-info' href="{{ url_for('login') }}">Sign In</a>
+            </small>
+        </fieldset>
+        <div class='form-group'>
+            {{ form.submit(class='btn btn-outline-info') }}
+        </div>
+    </form>
+</div>
+{% endblock content %}

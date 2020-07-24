@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<article class="media content-section">
+    <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-3 text-info" href="#">{{ question.author.username }}</a>
+            <small class="text-muted">{{ question.date_asked.strftime('%m-%d-%Y') }} /</small>
+            <small class="text-muted ">{{ question.date_asked.strftime('%H:%M %p') }}</small>
+        </div>
+        <h2 class="article-title mt-4">{{ question.question }}</h2>
+        <p class="article-content mt-4">{{ question.context }}</p>
+    </div>
+</article>
+
+<form action="{{ url_for('post_comment') }}" method="POST">
+    <textarea name='reply' class="form-control" id="exampleFormControlTextarea1" rows="2"></textarea>
+    <button class='btn btn-sm btn-outline-info mt-3'>Submit</button>
+</form>
+
+{% endblock content %}
