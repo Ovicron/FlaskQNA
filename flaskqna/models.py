@@ -38,6 +38,7 @@ class Comment(db.Model):
     date_replied = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
+
     def __repr__(self):
         return f"('{self.comment}', '{self.date_replied}', '{self.user_id}')"
         
